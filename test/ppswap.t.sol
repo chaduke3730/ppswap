@@ -13,9 +13,24 @@ this contract, Bob: deployer
 */
 
 contract ppswapTest is Test {
+    uint256 constant TEST_USERS_COUNT = 10;
+    address[] public users;
+   
     PPSwap ppswap; 
     FlashLoanAttacker attacker;
     uint initialAmt = 1_000_000e18;
+    
+    // generate MAX_USERS addresses and append it to users array
+    function _generateUserAddresses() internal {
+        require(users.length == 0, "Addresses already generated");
+
+        for (uint256 i = 0; i < TEST_USERS_COUNT; i++) {
+            address newAddress = makeAddr(string(abi.encode("account", i)));
+            users.push(newAddress);
+        }
+    }
+
+   
 
     function setUp() public {
         ppswap = new PPSwap(payable(address(this))); // Bob
